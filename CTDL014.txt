@@ -1,0 +1,105 @@
+#include <bits/stdc++.h>
+	using namespace std;
+	using ll = long long;
+	const ll MOD = 1e9 + 7;
+
+
+struct matrix {
+
+  int n;
+
+  ll a[11][11];
+
+  matrix operator*(matrix b) {
+
+    matrix res;
+
+    res.n = n;
+
+    for (int i = 0; i < n; i++) {
+
+      for (int j = 0; j < n; j++) {
+
+        res.a[i][j] = 0;
+
+        for (int k = 0; k < n; k++) {
+
+          res.a[i][j] += a[i][k] * b.a[k][j];
+
+          res.a[i][j] %= MOD;
+
+        }
+
+      }
+
+    }
+
+    return res;
+
+  }
+
+};
+matrix binPow(matrix a, ll k) {
+
+  if (k == 1) return a;
+
+  matrix tmp = binPow(a, k / 2);
+
+  if (k % 2) return tmp * tmp * a;
+
+  return tmp * tmp;
+
+}
+int main() {
+
+  int t;
+
+  cin >> t;
+
+  while (t--) {
+
+    ll n, k;
+
+    cin >> n >> k;
+
+    matrix f;
+
+    f.n = n;
+
+    for (int i = 0; i < n; i++) {
+
+      for (int j = 0; j < n; j++) {
+
+        cin >> f.a[i][j];
+
+      }
+
+    }
+
+    matrix res = binPow(f, k);
+
+    long long ans = 0;
+
+    for (int i = 0; i < n; i++) {
+
+      for (int j = 0; j < n; j++) {
+
+        if (i == n-j-1) {
+
+          ans += res.a[i][j];
+
+          ans %= MOD;
+
+        }
+
+      }
+
+    }
+
+    cout << ans << endl;
+
+  }
+
+  return 0;
+
+}
